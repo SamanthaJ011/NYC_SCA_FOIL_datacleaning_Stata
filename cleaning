@@ -1,0 +1,31 @@
+/* do-file for cleaning NYC SCA FOIL data - keeping most recent observation with actual spending per construction phase per project - 2/27/20 */
+
+import delimited "G:\MAX-Filer\Collab\B_RD-mwrothba-S19\Distribution Materials\Excel FOIL 2435 Data\all_SCA_pdfsscraped, 2-20-20.csv"
+
+save "G:\MAX-Filer\Collab\B_RD-mwrothba-S19\Public\NYC PB\FOIL2435data_allSCA.dta"
+
+gen projectid = dsf + boronumber + phase
+
+encode file, gen(YearQtr)
+
+sort projectid phase status YearQtr
+
+sort YearQtr
+
+gsort -YearQtr projectid phase status
+
+duplicates tag projectid, gen(dup)
+
+bysort projectid (YearQtr): keep if _n==_N
+/*(128,161 observations deleted)*/
+
+save "G:\MAX-Filer\Collab\B_RD-mwrothba-S19\Public\NYC PB\FOIL2435data_allSCA_clean.dta"
+
+gsort -YearQtr projectid
+
+duplicates tag projectid, gen(dup2)
+/* to check and ensure there are no duplicates 
+dup2 = 0 for all */
+
+
+save "G:\MAX-Filer\Collab\B_RD-mwrothba-S19\Public\NYC PB\FOIL2435data_allSCA_clean.dta", replace
