@@ -64,3 +64,11 @@ gen QtrComplete = 0
 replace QtrComplete = 1 if ProjectComplete ==1 & Last == 1
 table QtrComplete
 table YearQtr QtrComplete
+
+/* indicator of projects started in each quarter ever completed */
+ gen NewandComplete = 0
+ replace NewandComplete = 1 if ProjectComplete ==1 & newdsf == 1
+ table NewandComplete
+ table YearQtr NewandComplete
+
+save "G:\MAX-Filer\Collab\B_RD-mwrothba-S19\Public\NYC PB\FOIL2435data_allSCA_clean_FINAL.dta"
